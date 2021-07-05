@@ -479,6 +479,50 @@ void System::SaveTrajectoryKITTI(const string &filename)
     cout << endl << "trajectory saved!" << endl;
 }
 
+void System::SaveMapPoints(const string &filename) {
+    cout << endl << "Saving map points to " << filename << " ..." << endl;
+
+    vector<MapPoint*> vpMPs = mpMap->GetAllMapPoints();
+
+    // Transform all keyframes so that the first keyframe is at the origin.
+    // After a loop closure the first keyframe might not be at the origin.
+    ofstream f;
+    f.open(filename.c_str());
+    f << fixed;
+
+    for(size_t i=0; i<vpMPs.size(); i++) {
+        MapPoint* pMP = vpMPs[i];
+
+        if(pMP->isBad())
+            continue;
+
+        cv::Mat MPPositions = pMP->GetWorldPos();
+
+        f << setprecision(7) << " " << MPPositions.at<float>(0) << " " << MPPositions.at<float>(1) << " " << MPPositions.at<float>(2) << endl;
+    }
+
+    f.close();
+    cout << endl << "Map Points saved!" << endl;
+
+}
+/*
+void System::SaveCloudPoints(const string &filename) {
+float x,y,z;
+std::vector<ORB_SLAM2::MapPoint*> points = mpSLAM->GetTrackedMapPoints();
+for (std::vector::size_type i = 0; i != points.size(); i++) {
+if (points[i]){
+cv::Mat coords = points[i]->GetWorldPos();
+ x = coords.at<float>(2);
+ y = -coords.at<float>(0);
+ z = -coords.at<float>(1);
+//////////////////////////////////////////////////////////////////////////
+////  Enter Your Code Here to save file //////////////
+/////////////////////////////////////////////////////////////////////////
+}
+}
+}
+*/
+
 int System::GetTrackingState()
 {
     unique_lock<mutex> lock(mMutexState);
