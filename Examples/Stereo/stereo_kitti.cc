@@ -122,10 +122,15 @@ int main(int argc, char **argv)
     cout << "-------" << endl << endl;
     cout << "median tracking time: " << vTimesTrack[nImages/2] << endl;
     cout << "mean tracking time: " << totaltime/nImages << endl;
-
+/*Lo edito y cambio por las líneas que continúan (guardar los txt)
     // Save camera trajectory
     SLAM.SaveTrajectoryKITTI("CameraTrajectory.txt");
+    */
+    // Save camera trajectory
+    SLAM.SaveTrajectoryKITTI("/home/tincho/Escritorio/CameraTrajectory.txt");
 
+    //Agregado por yo
+    SLAM.SaveMapPoints("/home/tincho/Escritorio/OrbMapPoints.txt");
     return 0;
 }
 
