@@ -123,7 +123,7 @@ int main(int argc, char **argv)
     // Save camera trajectory
     SLAM.SaveKeyFrameTrajectoryTUM("KeyFrameTrajectory.txt");    
 */
-    // Save camera trajectory
+    // Save camera trajectory (agrego para ver si toma el cambio)
     SLAM.SaveKeyFrameTrajectoryTUM("/home/tincho/Escritorio/CameraTrajectory.txt");
     
     SLAM.SaveMapPoints("/home/tincho/Escritorio/OrbMapPoints.txt");
