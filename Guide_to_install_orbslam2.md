@@ -1,16 +1,38 @@
 # Para Ubuntu 20.04 - Instalación de ORB-SLAM2 - Muy caserito
 #### Tomé referencias de https://github.com/Mauhing/ORB_SLAM3/blob/master/README.md
-#### Tomé como 'cwd' el directorio donde estaré trabajando, es decir, dónde tendré ORB-SLAM2 y todas las demás carpetas.
+#### Tomé como 'cwd' el directorio donde estaré trabajando (directorio de preferencia), es decir, dónde tendré ORB-SLAM2 y todas las demás carpetas.
+#### Estamos asumiendo que este es un Ubuntu recién instalado, no tiene ningún programa aún.
 
-## Instalando la última versión de CMake (opcional)
-#### Seguí instrucciones desde https://askubuntu.com/questions/355565/how-do-i-install-the-latest-version-of-cmake-from-the-command-line
-* Técnicamente no es necesario instalar CMake aparte, yo lo hice porque tenía problemas y no sabía bien de donde venía el drama.
+Primeras cosas básicas a instalar:
 
 ```
-sudo apt update
-sudo apt install build-essential libtool autoconf unzip wget
+sudo apt install git
+sudo apt install gcc
+sudo apt install cmake
 
-sudo apt remove --purge --auto-remove cmake
+sudo apt-get update
+sudo apt-get -f install
+Esto limpia y actualiza el sistema, lo prepara para poder instalar otras cosas con dependencias.
+
+sudo apt install build-essential libtool autoconf unzip wget
+sudo apt-get install cmake git libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev
+
+sudo apt-get install python-dev python-numpy libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff-dev libdc1394-22-dev libjasper-dev
+
+sudo apt-get install libglew-dev libboost-all-dev libssl-dev
+
+sudo apt install libeigen3-dev
+```
+
+## Instalando la última versión de CMake (opcional)
+#### Seguí instrucciones desde https://askubuntu.com/questions/355565/how-do-i-install-the-latest-version-of-cmake-from-the-command-line (o sea, googleé)
+* Técnicamente no es necesario instalar CMake aparte, yo lo recomiendo, porque la versión de CMake que Pangolin te instala en el siguiente paso es una versión vieja y trae problemas de compatibilidad más adelante. Si se instala primero CMake, y luego Pangolin, al instalar las dependencias recomendadas por este, el CMake desactualizado se pasa por alto y queda instalado el más nuevo.
+Preparamos el ambiente:
+
+```
+sudo apt-get update
+sudo apt install build-essential libtool autoconf unzip wget
+sudo apt remove --purge --auto-remove cmake // Por si ya instalamos CMake antes y queremos empezar de cero
 ```
 
 #### Para saber que version y build, ingresar a https://www.cmake.org/download y consultar cuál es la versión más reciente.
@@ -32,7 +54,7 @@ sudo make install
 
 * Nota: para conocer el número de procesadores que tiene la computadora, ejecutar el comando nproc
 
-* Igual es relativo, a mi me salió nproc=4, sin embargo me dejó utilizar 8. El número de procesadores determina la velocidad de instalación, así que tener paciencia.
+* Igual es relativo, a mi me salió nproc=4, sin embargo me dejó utilizar 8 (lo recomiendo). El número de procesadores determina la velocidad de instalación, así que tener paciencia.
 
 ```
 cmake --version
@@ -42,8 +64,6 @@ cmake --version
 ### Seguí instruccinoes desde https://github.com/stevenlovegrove/Pangolin
 
 ```
-git clone --recursive https://github.com/stevenlovegrove/Pangolin.git
-
 cd ~/your_fav_code_directory
 git clone --recursive https://github.com/stevenlovegrove/Pangolin.git
 cd Pangolin 
@@ -55,7 +75,7 @@ cmake ..
 ```
 
 * En este punto obtuve errores de módulos, provenientes de Python, en particular me salió que faltaba el módulo 'setuptools'
-* Solucioné (me solucionaron) instalándolo: ``` sudo apt install python3-pip ```
+* Solucioné (me solucionaron) instalándolo: ``` sudo apt install python3-pip ``` (luego de eso, se puede instalar módulos de Python con ```pip install```)
 
 ```
 cmake --build .
