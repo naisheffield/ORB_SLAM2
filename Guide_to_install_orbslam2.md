@@ -95,17 +95,11 @@ gfortran openexr libatlas-base-dev python3-dev python3-numpy \
 libtbb2 libtbb-dev libdc1394-22-dev libopenexr-dev \
 libgstreamer-plugins-base1.0-dev libgstreamer1.0-dev
 
-mkdir opencv_build && cd ~opencv_build
+mkdir opencv_build && cd opencv_build
 
 git clone https://github.com/opencv/opencv.git
-cd opencv
-git checkout 4.2.0
-cd ..
 
 git clone https://github.com/opencv/opencv_contrib.git
-cd opencv_contrib
-git checkout 4.2.0
-cd ..
 
 cd opencv
 mkdir -p build && cd build
