@@ -63,24 +63,41 @@ cmake --version
 ## Instalando Pangolin
 ### Seguí instrucciones desde https://github.com/stevenlovegrove/Pangolin
 
+Opción 1 (esto hice yo): Instalar la versión 0.5.
+```
+wget https://github.com/stevenlovegrove/Pangolin/archive/refs/tags/v0.5.tar.gz
+tar -xf v0.5.tar.gz
+mv Pangolin-0.5 Pangolin
+cd Pangolin
+```
+
+Opción 2: instalar la versión más reciente.
+
 ```
 cd ~/your_fav_code_directory
 git clone --recursive https://github.com/stevenlovegrove/Pangolin.git
 cd Pangolin 
+```
+Pero eso arrojó problemas de versión más adelante al construir el orb-slam2. Así que opté por descargar una versión anterior (la 0.5) que es la que se detalla más arriba.
 
+Ya sea que se elija la opción 1 o 2, los pasos a seguir ahora son los mismos:
+
+```
 ./scripts/install_prerequisites.sh recommended
 
 mkdir build && cd build
 cmake ..
 ```
 
-* En este punto obtuve errores de módulos, provenientes de Python, en particular me salió que faltaba el módulo 'setuptools'
-* Solucioné (me solucionaron) instalándolo: ``` sudo apt install python3-pip ``` (luego de eso, se puede instalar módulos de Python con ```pip install```)
+Un posible error que puede ocurrir es de módulos provenientes de Python, en particular me salió que faltaba el módulo 'setuptools'.
+
+Solucioné (me solucionaron) instalándolo: ``` sudo apt install python3-pip ``` (luego de eso, se puede instalar módulos de Python con ```pip install```).
 
 ```
 cmake --build .
-
 cmake --build . -t pypangolin_pip_install
+
+sudo make install
 ```
 
 ## Instalando OpenCV
@@ -138,7 +155,7 @@ make install // Si tira error de permisos -> sudo make install
 
 ```
 cd cwd
-git clone https://github.com/raulmur/ORB_SLAM2.git ORB_SLAM2
+git clone https://github.com/Tinchott/ORB_SLAM2.git // Tiene algunos arreglos a bugs, también se puede optar por copiar este repositorio, es lo mismo.
 cd ORB_SLAM2
 chmod +x build.sh
 ./build.sh
