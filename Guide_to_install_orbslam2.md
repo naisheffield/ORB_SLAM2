@@ -24,7 +24,7 @@ sudo apt-get install libglew-dev libboost-all-dev libssl-dev
 sudo apt install libeigen3-dev
 ```
 
-## Instalando la última versión de CMake (opcional)
+## Instalando la última versión de CMake (opcional pero altamente recomendable)
 #### Seguí instrucciones desde https://askubuntu.com/questions/355565/how-do-i-install-the-latest-version-of-cmake-from-the-command-line (o sea, googleé)
 * Técnicamente no es necesario instalar CMake aparte, yo lo recomiendo, porque la versión de CMake que Pangolin te instala en el siguiente paso es una versión vieja y trae problemas de compatibilidad más adelante. Si se instala primero CMake, y luego Pangolin, al instalar las dependencias recomendadas por este, el CMake desactualizado se pasa por alto y queda instalado el más nuevo.
 Preparamos el ambiente:
@@ -61,7 +61,7 @@ cmake --version
 ```
 
 ## Instalando Pangolin
-### Seguí instruccinoes desde https://github.com/stevenlovegrove/Pangolin
+### Seguí instrucciones desde https://github.com/stevenlovegrove/Pangolin
 
 ```
 cd ~/your_fav_code_directory
@@ -95,12 +95,19 @@ gfortran openexr libatlas-base-dev python3-dev python3-numpy \
 libtbb2 libtbb-dev libdc1394-22-dev libopenexr-dev \
 libgstreamer-plugins-base1.0-dev libgstreamer1.0-dev
 
-mkdir ~/opencv_build && cd ~/opencv_build
+mkdir opencv_build && cd ~opencv_build
+
 git clone https://github.com/opencv/opencv.git
+cd opencv
+git checkout 4.2.0
+cd ..
 
 git clone https://github.com/opencv/opencv_contrib.git
+cd opencv_contrib
+git checkout 4.2.0
+cd ..
 
-cd ~/opencv_build/opencv
+cd opencv
 mkdir -p build && cd build
 
 cmake -D CMAKE_BUILD_TYPE=RELEASE \
