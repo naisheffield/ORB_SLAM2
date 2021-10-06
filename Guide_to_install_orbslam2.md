@@ -1,5 +1,10 @@
 # Para Ubuntu 20.04 - Instalación de ORB-SLAM2 - Muy caserito
-#### Tomé referencias de https://github.com/Mauhing/ORB_SLAM3/blob/master/README.md
+
+*Antes de empezar, es importante saber que hay varias páginas que ya tienen implementada estas instrucciones, las cuales yo desconocía y por eso armé la mía. Algunas son: https://www.jianshu.com/p/31c95d9a5f97 y https://programmerclick.com/article/4715354567/*
+
+*Aún así, dejé esta guía porque contiene algunas explicaciones que recolecté de otras páginas, sumado a algunos errores que fueron surgiendo y como fui solucionando*
+
+#### Tomé referencias de https://github.com/Mauhing/ORB_SLAM3/blob/master/README.md y de todos lados básicamente
 #### Tomé como 'cwd' el directorio donde estaré trabajando (directorio de preferencia), es decir, dónde tendré ORB-SLAM2 y todas las demás carpetas.
 #### Estamos asumiendo que este es un Ubuntu recién instalado, no tiene ningún programa aún.
 
@@ -12,7 +17,7 @@ sudo apt install cmake
 
 sudo apt-get update
 sudo apt-get -f install
-Esto limpia y actualiza el sistema, lo prepara para poder instalar otras cosas con dependencias.
+// Esto limpia y actualiza el sistema, lo prepara para poder instalar otras cosas con dependencias.
 
 sudo apt install build-essential libtool autoconf unzip wget
 sudo apt-get install cmake git libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev
@@ -63,26 +68,11 @@ cmake --version
 ## Instalando Pangolin
 ### Seguí instrucciones desde https://github.com/stevenlovegrove/Pangolin
 
-Opción 1 (esto hice yo): Instalar la versión 0.5.
-```
-wget https://github.com/stevenlovegrove/Pangolin/archive/refs/tags/v0.5.tar.gz
-tar -xf v0.5.tar.gz
-mv Pangolin-0.5 Pangolin
-cd Pangolin
-```
-
-Opción 2: instalar la versión más reciente.
-
 ```
 cd ~/your_fav_code_directory
 git clone --recursive https://github.com/stevenlovegrove/Pangolin.git
 cd Pangolin 
-```
-Pero eso arrojó problemas de versión más adelante al construir el orb-slam2. Así que opté por descargar una versión anterior (la 0.5) que es la que se detalla más arriba.
 
-Ya sea que se elija la opción 1 o 2, los pasos a seguir ahora son los mismos:
-
-```
 ./scripts/install_prerequisites.sh recommended
 
 mkdir build && cd build
@@ -104,7 +94,7 @@ sudo make install
 ### Seguí instrucciones desde https://vitux.com/opencv_ubuntu/
 
 ```
-cd cwd
+cd ~
 sudo apt install build-essential cmake git pkg-config libgtk-3-dev \
 libavcodec-dev libavformat-dev libswscale-dev libv4l-dev \
 libxvidcore-dev libx264-dev libjpeg-dev libpng-dev libtiff-dev \
@@ -155,8 +145,29 @@ make install // Si tira error de permisos -> sudo make install
 
 ```
 cd cwd
-git clone https://github.com/Tinchott/ORB_SLAM2.git // Tiene algunos arreglos a bugs, también se puede optar por copiar este repositorio, es lo mismo.
+git clone https://github.com/Windfisch/ORB_SLAM2.git // Tiene actualizaciones para trabajar con la versión 4 de OpenCV
 cd ORB_SLAM2
 chmod +x build.sh
 ./build.sh
 ```
+### A continuación, algunos errores que surgieron y como los solucioné
+*Errores de compilación repetidos, del estilo de 'variable not declared in scope'*
+
+Al parecer está relacionado con la flag de c++ utilizada, dentro de ORB_SLAM2/CMakeLists.txt; para solucionar, cambié dentro del archivo donde dijera "c+11" por "c+14"
+
+*Pangolin could not be found because dependency Eigen3 could not be found*
+
+Eliminé el archivo FindEigen3.cmake que estaba dentro de ORB_SLAM2/cmake_modules
+
+*Can't find -lpybind11::embed* O algo por el estilo
+
+Al parecer el módulo pybind11 es necesario en alguna parte del proceso, así que modifiqué el CMakeLists.txt dentro de ORB_SLAM2 y añadí:
+
+```
+set(CMAKE_PREFIX_PATH "/usr/local/lib/python3.8/dist-packages/pybind11/share/cmake/pybind11")
+find_package(pybind11 REQUIRED)
+
+```
+Debajo de ```find_package(Pangolin REQUIRED)```. La localiación del archivo pybind11Config.cmake puede variar (también puede llamarse pybind11-config.cmake), en cualquier caso, se puede buscar en /usr/ y copiar la dirección de la carpeta padre.
+
+Luego de eso, logré instalar ORBSLAM2, aunque con muchos warnings del tipo *deprecated*.
